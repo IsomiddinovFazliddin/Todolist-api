@@ -42,7 +42,7 @@ function Modal({ modal, setModal, addToCard, edit, setEdit, updateTask }) {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.5)] flex items-center justify-center z-50">
+    <div className="fixed top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.5)] flex items-center justify-center z-20">
       <div className={`w-105 bg-white rounded-lg p-5 relative`}>
         <h2 className="font-semibold text-[20px] mb-4">
           {edit ? "Vazifani tahrirlash" : "Yangi vazifa qo'shish"}

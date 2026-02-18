@@ -9,7 +9,7 @@ import { NavLink, Link } from "react-router-dom";
 function Aside({ setTitle, aside, setAside }) {
   return (
     <aside
-      className={`fixed flex flex-col left-0 top-0  h-screen border-r border-[#E9ECEF] bg-white z-30 transition-all duration-500 ease-in-out ${aside ? "w-20" : "w-64"}`}
+      className={`fixed flex flex-col left-0 top-0  h-screen border-r border-[#E9ECEF] bg-white z-20 transition-all duration-500 ease-in-out ${aside ? "w-20" : "w-64"}`}
     >
       <div className="logo border-b border-[#E9ECEF] p-5 flex justify-between gap-2 items-center">
         <div className="flex items-center gap-3">

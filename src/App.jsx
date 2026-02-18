@@ -26,7 +26,10 @@ function App() {
 
   const [edit, setEdit] = useState(null);
 
+  const [loader, setLoader] = useState(false);
+
   const getData = async () => {
+    setLoader(true);
     const requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -36,6 +39,7 @@ function App() {
       .then((response) => response.json())
       .then((result) => {
         setPlans(result);
+        setLoader(false);
       })
       .catch((error) => console.error(error));
   };
@@ -86,6 +90,13 @@ function App() {
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
+        {loader ? (
+          <div className="loader w-full h-screen fixed top-0 left-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] z-50">
+            <img src="https://wallpapercave.com/wp/wp2730731.gif" alt="" />
+          </div>
+        ) : (
+          ""
+        )}
         <Navbar title={title} aside={aside} setAside={setAside} />
 
         {modal ? (
@@ -130,7 +141,10 @@ function App() {
                     />
                   }
                 />
-                <Route path="/checktasks" element={<CheckTasks filterPlans={filterPlans} />} />
+                <Route
+                  path="/checktasks"
+                  element={<CheckTasks filterPlans={filterPlans} />}
+                />
                 <Route path="/nochecktasks" element={<NoCheckTasks />} />
                 <Route path="/settings" element={<Settings />} />
               </Routes>
