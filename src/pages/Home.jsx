@@ -4,15 +4,11 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 
 function Home({ plans }) {
   const total = plans.length;
-  const completed = plans.filter((p) => p.completed).length;
-  const pending = total - completed;
 
   const today = new Date().toISOString().split("T")[0];
   const todayTasks = plans.filter((p) => p.deadline === today);
   return (
-    
     <div className="container mx-auto p-5">
-        
       <h1 className="text-2xl font-bold mb-5">Salom! Bugungi vazifalaringiz</h1>
 
       {/* Statistika kartalari */}
@@ -20,17 +16,17 @@ function Home({ plans }) {
         <div className="bg-white shadow-md rounded-lg p-5 flex flex-col items-center justify-center">
           <FaTasks className="text-3xl text-blue-500 mb-2" />
           <span className="text-gray-500 text-sm">Jami vazifalar</span>
-          <span className="font-bold text-xl">{total}</span>
+          <span className="font-bold text-xl">{plans.length}</span>
         </div>
         <div className="bg-white shadow-md rounded-lg p-5 flex flex-col items-center justify-center">
           <FaCheckCircle className="text-3xl text-green-500 mb-2" />
           <span className="text-gray-500 text-sm">Bajarilgan</span>
-          <span className="font-bold text-xl">{completed}</span>
+          <span className="font-bold text-xl">0</span>
         </div>
         <div className="bg-white shadow-md rounded-lg p-5 flex flex-col items-center justify-center">
           <FaClock className="text-3xl text-yellow-500 mb-2" />
           <span className="text-gray-500 text-sm">Bajarilmagan</span>
-          <span className="font-bold text-xl">{pending}</span>
+          <span className="font-bold text-xl">0</span>
         </div>
         <div
           className="bg-red-500 text-white shadow-md rounded-lg p-5 flex flex-col items-center justify-center cursor-pointer hover:bg-red-600 w-full md:w-auto"
