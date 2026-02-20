@@ -16,7 +16,7 @@ function Home({ plans }) {
         <div className="bg-white shadow-md rounded-lg p-5 flex flex-col items-center justify-center">
           <FaTasks className="text-3xl text-blue-500 mb-2" />
           <span className="text-gray-500 text-sm">Jami vazifalar</span>
-          <span className="font-bold text-xl">{plans.length}</span>
+          <span className="font-bold text-xl">{total}</span>
         </div>
         <div className="bg-white shadow-md rounded-lg p-5 flex flex-col items-center justify-center">
           <FaCheckCircle className="text-3xl text-green-500 mb-2" />

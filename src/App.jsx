@@ -12,7 +12,7 @@ import { FaPlus } from "react-icons/fa";
 import Modal from "./components/Modal";
 
 function App() {
-  const [title, setTitle] = useState("Mening vazifalarim");
+  const [navbarTitle, setNavbarTitle] = useState("Mening vazifalarim");
   const [aside, setAside] = useState(() => {
     try {
       const saved = localStorage.getItem("sidebar");
@@ -22,14 +22,15 @@ function App() {
     }
   });
   const [modal, setModal] = useState(false);
+  //   const [loader, setLoader] = useState(false);
   const [plans, setPlans] = useState([]);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+  const [newDate, setNewDate] = useState(null);
+  const [editId, setEditId] = useState(null);
+  const [search, setSearch] = useState("");
 
-  const [edit, setEdit] = useState(null);
-
-  const [loader, setLoader] = useState(false);
-
-  const getData = async () => {
-    setLoader(true);
+  const getData = () => {
     const requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -39,81 +40,161 @@ function App() {
       .then((response) => response.json())
       .then((result) => {
         setPlans(result);
-        setLoader(false);
       })
       .catch((error) => console.error(error));
   };
 
   useEffect(() => {
-    localStorage.setItem("sidebar", JSON.stringify(aside));
-  }, [aside]);
-
-  useEffect(() => {
     getData();
   }, []);
 
-  const addToCard = (item) => {
-    const obj = {
-      id: plans.length + 1,
-      title: item.title,
-      description: item.description,
-      deadline: item.deadline || new Date().toISOString().split("T")[0],
-      level: item.level || "o'rta",
+  const closeModal = () => {
+    setModal(false);
+    setNewTitle("");
+    setNewDesc("");
+    setNewDate(null);
+    setEditId(null);
+  };
+
+  const addPlans = () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      title: newTitle,
+      description: newDesc,
+      status: "Not Started",
+      deadline: newDate,
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
     };
-    setPlans([...plans, obj]);
-    setModal(false);
+
+    fetch("https://todopage.pythonanywhere.com/todo/add/", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        getData();
+        closeModal();
+      })
+      .catch((error) => console.error(error));
   };
 
-  const updateTask = (updatedItem) => {
-    const update = plans.map((item) =>
-      item.id === updatedItem.id ? updatedItem : item,
-    );
-    setPlans(update);
-    setEdit(null);
-    setModal(false);
+  const getObj = (id) => {
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    fetch(`https://todopage.pythonanywhere.com/todos/${id}/`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        setNewTitle(result.title);
+        setNewDesc(result.description);
+        setNewDate(result.deadline);
+      })
+      .catch((error) => console.error(error));
   };
 
-  const del = (id) => {
-    const filterDta = plans.filter((item) => item.id !== id);
-    setPlans(filterDta);
+  const updatePlans = () => {
+    console.log(newTitle, newDesc, newDate);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      title: newTitle,
+      description: newDesc,
+      status: "Not Started",
+      deadline: "2026-02-19",
+    });
+
+    const requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(
+      `https://todopage.pythonanywhere.com/todos/${editId}/`,
+      requestOptions,
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        getData();
+        closeModal();
+      })
+      .catch((error) => console.error(error));
   };
 
-  const filterPlans = (status) => {
-    if (status === "checked") {
-      return plans.filter((item) => item.checked);
-    } else if (status === "unchecked") {
-      return plans.filter((item) => !item.checked);
-    }
-    return plans;
+  const delPlans = (id) => {
+    const requestOptions = {
+      method: "DELETE",
+      redirect: "follow",
+    };
+
+    fetch(`https://todopage.pythonanywhere.com/todos/${id}/`, requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        console.log(result);
+        getData();
+      })
+      .catch((error) => console.error(error));
   };
+
+  const filterPlans = plans.filter(
+    (item) =>
+      item.title.toLowerCase().includes(search.toLowerCase()) ||
+      item.description.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
     <BrowserRouter>
       <div className="flex flex-col min-h-screen">
-        {loader ? (
-          <div className="loader w-full h-screen fixed top-0 left-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] z-50">
+        {/* {loader ? (
+          <div className="loader w-full h-screen fixed top-0 left-0 flex justify-center items-center bg-[rgba(0,0,0,5)] z-50">
             <img src="https://wallpapercave.com/wp/wp2730731.gif" alt="" />
           </div>
         ) : (
           ""
-        )}
-        <Navbar title={title} aside={aside} setAside={setAside} />
+        )} */}
+        <Navbar
+          navbarTitle={navbarTitle}
+          aside={aside}
+          setAside={setAside}
+          setSearch={setSearch}
+        />
 
         {modal ? (
           <Modal
-            modal={modal}
             setModal={setModal}
-            addToCard={addToCard}
-            edit={edit}
-            setEdit={setEdit}
-            updateTask={updateTask}
+            newTitle={newTitle}
+            newDesc={newDesc}
+            newDate={newDate}
+            setNewTitle={setNewTitle}
+            setNewDesc={setNewDesc}
+            setNewDate={setNewDate}
+            addPlans={addPlans}
+            closeModal={closeModal}
+            editId={editId}
+            updatePlans={updatePlans}
           />
         ) : (
           ""
         )}
 
         <div className="flex flex-1 pt-20 ">
-          <Aside setTitle={setTitle} aside={aside} setAside={setAside} />
+          <Aside
+            setNavbarTitle={setNavbarTitle}
+            aside={aside}
+            setAside={setAside}
+          />
           <main
             className={`flex flex-col flex-1 transition-all duration-300 ease-in-out   ${aside ? "ml-20" : "ml-64"}`}
           >
@@ -134,17 +215,15 @@ function App() {
                   path="/alltasks"
                   element={
                     <AllTasks
-                      plans={plans}
+                      plans={filterPlans}
+                      delPlans={delPlans}
                       setModal={setModal}
-                      del={del}
-                      setEdit={setEdit}
+                      setEditId={setEditId}
+                      getObj={getObj}
                     />
                   }
                 />
-                <Route
-                  path="/checktasks"
-                  element={<CheckTasks filterPlans={filterPlans} />}
-                />
+                <Route path="/checktasks" element={<CheckTasks />} />
                 <Route path="/nochecktasks" element={<NoCheckTasks />} />
                 <Route path="/settings" element={<Settings />} />
               </Routes>

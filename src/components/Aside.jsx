@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { AiOutlineCheckCircle, AiOutlineHome } from "react-icons/ai";
-import { FaRegMoon } from "react-icons/fa";
 import { FiAlertCircle, FiMoon } from "react-icons/fi";
 import { LuSettings, LuSquareCheckBig } from "react-icons/lu";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { NavLink, Link } from "react-router-dom";
 
-function Aside({ setTitle, aside, setAside }) {
+function Aside({ setNavbarTitle, aside, setAside }) {
   return (
     <aside
       className={`fixed flex flex-col left-0 top-0  h-screen border-r border-[#E9ECEF] bg-white z-20 transition-all duration-500 ease-in-out ${aside ? "w-20" : "w-64"}`}
@@ -34,6 +33,9 @@ function Aside({ setTitle, aside, setAside }) {
       <div className="main p-5 flex-1">
         <NavLink
           to={"/"}
+          onClick={()=>{
+            setNavbarTitle("Bosh sahifa")
+          }}
           className={({ isActive }) =>
             `flex p-3 group items-center  mb-2.5 rounded-[10px] cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F8F9FA] ${aside ? "justify-center" : "gap-3"} ${
               isActive
@@ -57,6 +59,9 @@ function Aside({ setTitle, aside, setAside }) {
         </NavLink>
         <NavLink
           to={"/alltasks"}
+          onClick={()=>{
+            setNavbarTitle("Barcha vazifalar")
+          }}
           className={({ isActive }) =>
             `flex p-3 group items-center  mb-2.5 rounded-[10px] cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F8F9FA] ${aside ? "justify-center" : "gap-3"} ${
               isActive
@@ -80,6 +85,9 @@ function Aside({ setTitle, aside, setAside }) {
         </NavLink>
         <NavLink
           to={"/checktasks"}
+          onClick={()=>{
+            setNavbarTitle("Bajarilgan")
+          }}
           className={({ isActive }) =>
             `flex p-3 group items-center  mb-2.5 rounded-[10px] cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F8F9FA] ${aside ? "justify-center" : "gap-3"} ${
               isActive
@@ -103,6 +111,9 @@ function Aside({ setTitle, aside, setAside }) {
         </NavLink>
         <NavLink
           to={"/nochecktasks"}
+          onClick={()=>{
+            setNavbarTitle("Bajarilmagan")
+          }}
           className={({ isActive }) =>
             `flex p-3 group items-center  mb-2.5 rounded-[10px] cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F8F9FA] ${aside ? "justify-center" : "gap-3"} ${
               isActive
@@ -126,6 +137,9 @@ function Aside({ setTitle, aside, setAside }) {
         </NavLink>
         <NavLink
           to={"/settings"}
+          onClick={()=>{
+            setNavbarTitle("Sozlamalar")
+          }}
           className={({ isActive }) =>
             `flex p-3 group items-center  mb-2.5 rounded-[10px] cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F8F9FA] ${aside ? "justify-center" : "gap-3"} ${
               isActive
