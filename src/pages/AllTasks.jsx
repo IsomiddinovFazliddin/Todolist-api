@@ -2,7 +2,7 @@ import React from "react";
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
-function AllTasks({ plans, delPlans, setModal, setEditId, getObj }) {
+function AllTasks({ plans, delPlans, setModal, setEditId, getObj, toggleStatus }) {
   return (
     <div>
       <div className="container">
@@ -16,20 +16,28 @@ function AllTasks({ plans, delPlans, setModal, setEditId, getObj }) {
                 <div className="flex items-center gap-3 mb-2">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 accent-blue-700 peer"
+                    className="w-4 h-4 accent-blue-700"
+                    checked={item.status === "Completed"}
+                    onChange={() => toggleStatus(item)}
                   />
-                  <h4 className="text-[#212529] font-medium text-[16px] peer-checked:line-through peer-checked:text-gray-400">
+                  <h4 className={`text-[#212529] font-medium text-[16px] ${item.status === "Completed" ? "line-through text-gray-400" : ""}`}>
                     {item.title}
                   </h4>
                 </div>
-                <h5 className="pl-7 text-gray-400 text-[13px] peer-checked:line-through ">
+                <h5 className={`pl-7 text-gray-400 text-[13px] ${item.status === "Completed" ? "line-through" : ""}`}>
                   {item.description}
                 </h5>
               </div>
               <div className=" ">
                 <div className="flex items-center gap-5 mb-3 justify-end">
-                  <span className="px-2 py-1.5 bg-[#FCF5DB] rounded-lg text-[12px] font-semibold text-[#fabe4e]">
-                    o'rta
+                  <span className={`px-2 py-1.5 rounded-lg text-[12px] font-semibold ${
+                    item.level === "yuqori"
+                      ? "bg-red-100 text-red-500"
+                      : item.level === "past"
+                      ? "bg-green-100 text-green-600"
+                      : "bg-[#FCF5DB] text-[#fabe4e]"
+                  }`}>
+                    {item.level}
                   </span>
                   <div className="flex items-center gap-1.5">
                     <h6 className="capitalize text-[12px] text-gray-300 font-medium">

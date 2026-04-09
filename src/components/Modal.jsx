@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 
 function Modal({
-  setModal,
   newTitle,
   setNewTitle,
   newDesc,
   setNewDesc,
   newDate,
   setNewDate,
+  newLevel,
+  setNewLevel,
   addPlans,
   closeModal,
   editId,
@@ -97,8 +98,8 @@ function Modal({
                 Muhimlik darajasi
               </label>
               <select
-                name=""
-                id=""
+                value={newLevel}
+                onChange={(e) => setNewLevel(e.target.value)}
                 className="w-full text-[14px] text-gray-700 border border-[#E9ECEF] bg-[#F8F9FA] py-2 px-4 mb-5 outline-none rounded-md capitalize"
               >
                 <option value="o'rta">o'rta</option>

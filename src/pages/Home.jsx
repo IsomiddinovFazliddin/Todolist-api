@@ -2,8 +2,10 @@ import React from "react";
 import { FaTasks, FaCheckCircle, FaClock, FaPlus } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 
-function Home({ plans }) {
+function Home({ plans, clearCompletedTasks }) {
   const total = plans.length;
+  const completed = plans.filter((p) => p.status === "Completed").length;
+  const notStarted = plans.filter((p) => p.status === "Not Started").length;
 
   const today = new Date().toISOString().split("T")[0];
   const todayTasks = plans.filter((p) => p.deadline === today);
@@ -21,16 +23,16 @@ function Home({ plans }) {
         <div className="bg-white shadow-md rounded-lg p-5 flex flex-col items-center justify-center">
           <FaCheckCircle className="text-3xl text-green-500 mb-2" />
           <span className="text-gray-500 text-sm">Bajarilgan</span>
-          <span className="font-bold text-xl">0</span>
+          <span className="font-bold text-xl">{completed}</span>
         </div>
         <div className="bg-white shadow-md rounded-lg p-5 flex flex-col items-center justify-center">
           <FaClock className="text-3xl text-yellow-500 mb-2" />
           <span className="text-gray-500 text-sm">Bajarilmagan</span>
-          <span className="font-bold text-xl">0</span>
+          <span className="font-bold text-xl">{notStarted}</span>
         </div>
         <div
           className="bg-red-500 text-white shadow-md rounded-lg p-5 flex flex-col items-center justify-center cursor-pointer hover:bg-red-600 w-full md:w-auto"
-          onClick={() => clearCompletedTasks()} // clearCompletedTasks funksiyasini yozish kerak
+          onClick={() => clearCompletedTasks()}
         >
           <RiDeleteBin5Fill className="text-3xl mb-2" />
           <span className="font-bold text-sm">Bajarilganlarni tozalash</span>
